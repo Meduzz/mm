@@ -5,7 +5,7 @@ This is intended to be a cli companion to llama.cpp.
 
 ## TODO
 
-### Commands
+### Commands (cmd/)
 **serve**
 This command will start the llama-server with a few defaults.
 
