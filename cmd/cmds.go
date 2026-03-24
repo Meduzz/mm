@@ -6,6 +6,6 @@ func init() {
 	registry.RegisterCommand(serve())
 	registry.RegisterCommand(stop())
 	registry.RegisterCommand(ls())
-	registry.RegisterCommand(rm())
+	registry.RegisterCommand(removeCommand())
 	registry.RegisterCommand(unload())
 }
