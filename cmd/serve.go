@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"os"
+	"fmt"
 	"os/exec"
 	"time"
 
@@ -10,6 +10,7 @@ import (
 	"github.com/Meduzz/commando/flags"
 	"github.com/Meduzz/commando/model"
 	"github.com/Meduzz/mm/pkg/config"
+	"github.com/Meduzz/mm/pkg/openai"
 	"github.com/spf13/cobra"
 )
 
@@ -53,8 +54,17 @@ func serveHandler(cmd *cobra.Command, args []string) error {
 
 	time.Sleep(250 * time.Millisecond)
 
-	if _, err := os.FindProcess(serverCmd.Process.Pid); err != nil {
-		return err
+	err = openai.Health()
+
+	if err != nil {
+		// the server most likely did not start
+		ps, err := serverCmd.Process.Wait()
+
+		if err != nil {
+			return err
+		}
+
+		return fmt.Errorf("%s exited with %d", serverCmd.String(), ps.ExitCode())
 	}
 
 	runtimeFile.PID = serverCmd.Process.Pid

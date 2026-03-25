@@ -113,3 +113,36 @@ func UnloadModel(name string) error {
 
 	return nil
 }
+
+func Health() error {
+	// load Runtime config
+	config, err := config.LoadRuntime()
+
+	if err != nil {
+		return err
+	}
+
+	// build request to list models
+	serverUrl := fmt.Sprintf("http://localhost:%d", config.Port)
+	healthUrl := fmt.Sprintf("%s/health", serverUrl)
+	req, err := client.GET(healthUrl)
+
+	if err != nil {
+		return err
+	}
+
+	// call llama.cpp
+	res, err := req.DoDefault()
+
+	if err != nil {
+		return err
+	}
+
+	err = herror.IsError(res.Code())
+
+	if err != nil {
+		return err
+	}
+
+	return res.Response().Body.Close()
+}
