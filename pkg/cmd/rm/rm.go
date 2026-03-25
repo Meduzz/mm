@@ -11,13 +11,7 @@ import (
 	"github.com/Meduzz/mm/pkg/openai"
 )
 
-type Rm struct{}
-
-func New() *Rm {
-	return &Rm{}
-}
-
-func (r *Rm) DeleteModel(path string) error {
+func deleteModel(path string) error {
 	if err := os.Remove(path); err != nil {
 		return err
 	}
@@ -25,7 +19,7 @@ func (r *Rm) DeleteModel(path string) error {
 	return nil
 }
 
-func (r *Rm) getGlobPattern(name string) string {
+func getGlobPattern(name string) string {
 	if strings.Contains(name, "/") {
 		parts := strings.Split(name, "/")
 		name = parts[1]
@@ -34,7 +28,7 @@ func (r *Rm) getGlobPattern(name string) string {
 	return "*" + name + "*.*"
 }
 
-func (r *Rm) RemoveModel(modelName string) error {
+func RemoveModel(modelName string) error {
 	// list models
 	models, err := openai.LoadModels()
 
@@ -55,7 +49,7 @@ func (r *Rm) RemoveModel(modelName string) error {
 	}
 
 	// simplify filename remove /
-	filePattern := r.getGlobPattern(modelName)
+	filePattern := getGlobPattern(modelName)
 
 	// start with dir for model from server (can be empty)
 	dir := targetModel.Path
@@ -80,7 +74,7 @@ func (r *Rm) RemoveModel(modelName string) error {
 
 	// remove matches
 	for _, match := range matches {
-		if err := r.DeleteModel(match); err != nil {
+		if err := deleteModel(match); err != nil {
 			return err
 		}
 	}

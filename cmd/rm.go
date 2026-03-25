@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"fmt"
+
 	"github.com/Meduzz/commando"
 	"github.com/Meduzz/commando/builder"
 	"github.com/Meduzz/commando/flags"
 	"github.com/Meduzz/commando/model"
-	"github.com/spf13/cobra"
-
 	"github.com/Meduzz/mm/pkg/cmd/rm"
+	"github.com/spf13/cobra"
 )
 
 func removeCommand() *model.Command {
@@ -30,6 +30,5 @@ func rmHandler(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("model name is required")
 	}
 
-	rmInstance := rm.New()
-	return rmInstance.RemoveModel(modelName)
+	return rm.RemoveModel(modelName)
 }
