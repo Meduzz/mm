@@ -9,7 +9,7 @@ import (
 func LoadConfig() (*Config, error) {
 	cfg := &Config{
 		Attributes: []string{
-			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "45",
+			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "45", "--host", "0.0.0.0",
 		},
 		Models: filepath.Join(userHome(), "Library", "Caches", "llama.cpp"),
 	}
