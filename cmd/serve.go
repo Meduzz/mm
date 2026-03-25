@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"os"
 	"os/exec"
+	"time"
 
 	"github.com/Meduzz/commando"
 	"github.com/Meduzz/commando/builder"
@@ -43,13 +45,22 @@ func serveHandler(cmd *cobra.Command, args []string) error {
 
 	serverCmd := exec.Command(cmdPath, cmdArgs...)
 
-	if err := serverCmd.Start(); err != nil {
+	err = serverCmd.Start()
+
+	if err != nil {
+		return err
+	}
+
+	time.Sleep(250 * time.Millisecond)
+
+	if _, err := os.FindProcess(serverCmd.Process.Pid); err != nil {
 		return err
 	}
 
 	runtimeFile.PID = serverCmd.Process.Pid
 
 	err = config.StoreRuntime(runtimeFile)
+
 	if err != nil {
 		serverCmd.Process.Kill()
 		return err

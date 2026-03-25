@@ -12,7 +12,9 @@ import (
 )
 
 func deleteModel(path string) error {
-	if err := os.Remove(path); err != nil {
+	err := os.Remove(path)
+
+	if err != nil {
 		return err
 	}
 
@@ -74,7 +76,9 @@ func RemoveModel(modelName string) error {
 
 	// remove matches
 	for _, match := range matches {
-		if err := deleteModel(match); err != nil {
+		err := deleteModel(match)
+
+		if err != nil {
 			return err
 		}
 	}

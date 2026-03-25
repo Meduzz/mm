@@ -56,7 +56,9 @@ func LoadRuntime() (*Runtime, error) {
 func StoreRuntime(cfg *Runtime) error {
 	cfgPath := filepath.Join(userHome(), ".config", "mm", "running.json")
 
-	if err := os.MkdirAll(filepath.Dir(cfgPath), 0755); err != nil {
+	err := os.MkdirAll(filepath.Dir(cfgPath), 0755)
+
+	if err != nil {
 		return err
 	}
 
