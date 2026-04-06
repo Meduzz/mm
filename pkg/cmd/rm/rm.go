@@ -3,7 +3,7 @@ package rm
 import (
 	"fmt"
 	"os"
-	"path/filepath"
+	"path"
 	"strings"
 
 	"github.com/Meduzz/helper/fp/slice"
@@ -12,22 +12,16 @@ import (
 )
 
 func deleteModel(path string) error {
-	err := os.Remove(path)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return os.RemoveAll(path)
 }
 
 func getGlobPattern(name string) string {
 	if strings.Contains(name, "/") {
 		parts := strings.Split(name, "/")
-		name = parts[1]
+		name = parts[len(parts)-1]
 	}
 
-	return "*" + name + "*.*"
+	return "*" + name + "*"
 }
 
 func RemoveModel(modelName string) error {
@@ -50,9 +44,6 @@ func RemoveModel(modelName string) error {
 		return fmt.Errorf("model %s does not exist", modelName)
 	}
 
-	// simplify filename remove /
-	filePattern := getGlobPattern(modelName)
-
 	// start with dir for model from server (can be empty)
 	dir := targetModel.Path
 
@@ -67,20 +58,24 @@ func RemoveModel(modelName string) error {
 		dir = cfg.Models
 	}
 
-	// find files matching filePattern
-	matches, err := filepath.Glob(filepath.Join(dir, filePattern))
+	// build the base name
+	filePattern := fmt.Sprintf("models/%s", modelName)
+	// replace slash by --
+	filePattern = strings.ReplaceAll(filePattern, "/", "--")
+	// remove tag-name
+	split := strings.Split(filePattern, ":")
+	// add dir.
+	filePattern = path.Join(dir, split[0])
 
 	if err != nil {
 		return err
 	}
 
-	// remove matches
-	for _, match := range matches {
-		err := deleteModel(match)
+	// remove stuff.
+	err = deleteModel(filePattern)
 
-		if err != nil {
-			return err
-		}
+	if err != nil {
+		return err
 	}
 
 	fmt.Printf("%s removed successfully\n", modelName)

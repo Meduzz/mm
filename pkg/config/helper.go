@@ -11,7 +11,7 @@ func LoadConfig() (*Config, error) {
 		Attributes: []string{
 			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "45", "--host", "0.0.0.0",
 		},
-		Models: filepath.Join(userHome(), "Library", "Caches", "llama.cpp"),
+		Models: filepath.Join(userHome(), ".cache", "huggingface", "hub"),
 	}
 
 	cfgPath := filepath.Join(userHome(), ".config", "mm", "config.json")
