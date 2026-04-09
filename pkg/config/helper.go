@@ -9,7 +9,7 @@ import (
 func LoadConfig() (*Config, error) {
 	cfg := &Config{
 		Attributes: []string{
-			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "45", "--host", "0.0.0.0",
+			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "30", "--host", "0.0.0.0", "-c", "131072",
 		},
 		Models: filepath.Join(userHome(), ".cache", "huggingface", "hub"),
 	}
