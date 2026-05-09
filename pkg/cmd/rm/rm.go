@@ -49,7 +49,7 @@ func RemoveModel(modelName string) error {
 
 	if dir == "" {
 		// instead load it from config
-		cfg, err := config.LoadConfig()
+		cfg, err := config.LoadConfig(0, 0)
 
 		if err != nil {
 			return err

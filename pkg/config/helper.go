@@ -2,14 +2,15 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 )
 
-func LoadConfig() (*Config, error) {
+func LoadConfig(port, context int) (*Config, error) {
 	cfg := &Config{
 		Attributes: []string{
-			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "30", "--host", "0.0.0.0", "-c", "131072",
+			"--jinja", "--repeat-penalty", "1.0", "--sleep-idle-seconds", "10", "-c", fmt.Sprintf("%d", context), "--port", fmt.Sprintf("%d", port), "-cram", "256",
 		},
 		Models: filepath.Join(userHome(), ".cache", "huggingface", "hub"),
 	}

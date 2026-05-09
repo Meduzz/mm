@@ -19,13 +19,15 @@ func serve() *model.Command {
 		cb.Description("Starts llama.cpp server.")
 		cb.Handler(serveHandler)
 		cb.Flag(flags.IntFlag("port", 8080, "The port to run the server on."))
+		cb.Flag(flags.IntFlag("context", 32, "Start server with this max context length in GB"))
 	})
 }
 
 func serveHandler(cmd *cobra.Command, args []string) error {
 	port, _ := cmd.Flags().GetInt("port")
+	context, _ := cmd.Flags().GetInt("context")
 
-	cfg, err := config.LoadConfig()
+	cfg, err := config.LoadConfig(port, context*1024)
 
 	if err != nil {
 		return err
