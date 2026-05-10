@@ -48,6 +48,8 @@ func serveHandler(cmd *cobra.Command, args []string) error {
 
 	serverCmd := exec.Command(cmdPath, cmdArgs...)
 
+	fmt.Println(serverCmd.String())
+
 	err = serverCmd.Start()
 
 	if err != nil {
@@ -77,6 +79,8 @@ func serveHandler(cmd *cobra.Command, args []string) error {
 		serverCmd.Process.Kill()
 		return err
 	}
+
+	fmt.Printf("llama-server started on port: %d.\n", port)
 
 	return nil
 }
